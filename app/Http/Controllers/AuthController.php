@@ -35,11 +35,21 @@ class AuthController extends Controller
     public function registerProses(Request $request)
     {
         $validation = $request->validate([
-            'name'       => 'required',
-            'email'      => 'required',
-            'password'   => 'required',
-            'no_telepon' => 'required',
-            'alamat'     => 'required',
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|email|unique:users,email',
+            'password'   => 'required|string|min:8',
+            'no_telepon' => 'required|string|max:15',
+            'alamat'     => 'required|string|max:255',
+        ], [
+            'name.required'       => 'Nama harus diisi.',
+            'email.required'      => 'Email harus diisi.',
+            'email.email'         => 'Format email tidak valid.',
+            'email.unique'        => 'Email sudah terdaftar.',
+            'password.required'   => 'Password harus diisi.',
+            'password.min'        => 'Password harus terdiri dari minimal 8 karakter.',
+            // 'password.confirmed'  => 'Konfirmasi password tidak cocok.',
+            'no_telepon.required' => 'Nomor telepon harus diisi.',
+            'alamat.required'     => 'Alamat harus diisi.',
         ]);
 
         $validation['password'] = Hash::make($request->password);
